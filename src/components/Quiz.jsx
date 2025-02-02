@@ -15,16 +15,32 @@ const Quiz = () => {
   console.log("Question", text);
   answers.forEach((item) => console.log(item));
 
-  const handleClick = () => {
+  const handleClick = (correct) => {
+    if (correct) {
+      setResult((prev) => ({
+        ...prev,
+        score: prev.score + 1,
+        correctAnswers: prev.correctAnswers + 1,
+      }));
+    } else {
+      setResult((prev) => ({
+        ...prev,
+        wrongAnswers: prev.wrongAnswers + 1,
+      }));
+    }
     setActiveQuestion(activeQuestion + 1);
-  }
+  };
 
   return (
     <div>
       <h1>Quiz</h1>
       <h2>{text}</h2>
-      {answers.map((object, i) => (
-        <Button value={object.text} onClick={handleClick} key={i}></Button>
+      {answers.map((el, i) => (
+        <Button
+          value={el.text}
+          onClick={() => handleClick(el.isCorrect)}
+          key={i}
+        ></Button>
       ))}
     </div>
   );
