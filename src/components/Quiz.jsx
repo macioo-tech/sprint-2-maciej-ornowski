@@ -44,7 +44,6 @@ const Quiz = () => {
     <div>
       {!summary ? (
         <div>
-          <h1>Quiz</h1>
           <h2>{text}</h2>
           {answers.map((el, i) => (
             <Button
@@ -59,7 +58,7 @@ const Quiz = () => {
           <h1>Podsumowanie:</h1>
           <p>Poprawnych: {result.correctAnswers}</p>
           <p>Błędnych: {result.wrongAnswers}</p>
-          <Button value="Rozpocznij od nowa"></Button>
+          <Button value="Powrót do startu"></Button>
         </div>
       )}
     </div>
