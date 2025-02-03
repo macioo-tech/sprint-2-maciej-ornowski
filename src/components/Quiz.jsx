@@ -1,36 +1,24 @@
 import { useState } from "react";
 import { QUESTIONS } from "../quizQuestions";
 import Button from "./Button";
+import Summary from "./Summary";
 
 const Quiz = () => {
   const [activeQuestion, setActiveQuestion] = useState(0);
-  //const [selectedAnswer, setSelectedAnswer] = useState("");
-  const [result, setResult] = useState({
-    score: 0,
-    correctAnswers: 0,
-    wrongAnswers: 0,
-  });
+  const [selectedAnswer, setSelectedAnswer] = useState([]);
+  const [result, setResult] = useState(0);
   const [summary, setSummary] = useState(false);
 
   const { text, answers } = QUESTIONS[activeQuestion];
-  console.log("Question", text);
-  answers.forEach((item) => console.log(item));
-  console.log("Długość quizu:", QUESTIONS.length);
-  console.log("Aktualne pytanie:", activeQuestion);
 
-  const handleClick = (correct) => {
-    if (correct) {
-      setResult((prev) => ({
-        ...prev,
-        score: prev.score + 1,
-        correctAnswers: prev.correctAnswers + 1,
-      }));
-    } else {
-      setResult((prev) => ({
-        ...prev,
-        wrongAnswers: prev.wrongAnswers + 1,
-      }));
-    }
+  //console.log("Question", text);
+  //answers.forEach((item) => console.log(item));
+  //console.log("Długość quizu:", QUESTIONS.length);
+  //console.log("Aktualne pytanie:", activeQuestion);
+  //console.log("Poprawne odp:", result);
+  
+  const handleClick = (correct, i) => {
+    if (correct) setResult(result + 1);
 
     if (activeQuestion < QUESTIONS.length - 1) {
       setActiveQuestion(activeQuestion + 1);
@@ -38,7 +26,17 @@ const Quiz = () => {
       setActiveQuestion(0);
       setSummary(true);
     }
+    setSelectedAnswer([
+      ...selectedAnswer,
+      {
+        question: text,
+        answer: answers[i].text,
+        isCorrect: answers[i].isCorrect,
+      },
+    ]);
   };
+
+  //console.log("Selected:", selectedAnswer);
 
   return (
     <div>
@@ -48,18 +46,15 @@ const Quiz = () => {
           {answers.map((el, i) => (
             <Button
               value={el.text}
-              onClick={() => handleClick(el.isCorrect)}
+              onClick={() => handleClick(el.isCorrect, i)}
               key={i}
             ></Button>
           ))}
         </div>
       ) : (
-        <div>
-          <h1>Podsumowanie:</h1>
-          <p>Poprawnych: {result.correctAnswers}</p>
-          <p>Błędnych: {result.wrongAnswers}</p>
-          <Button value="Powrót do startu"></Button>
-        </div>
+        <>
+          <Summary value={result} answers={selectedAnswer} />
+        </>
       )}
     </div>
   );

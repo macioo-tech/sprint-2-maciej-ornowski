@@ -8,16 +8,12 @@ import Button from "./components/Button";
 function App() {
   const [start, setStart] = useState(false);
 
-  const handleClick = () => {
-    setStart((prev) => !prev);
-  };
-
   return (
     <>
     {!start ? (
       <>
       <h1>Javascript Quiz</h1>
-      <Button value="Rozpocznik quiz" onClick={handleClick}></Button>
+      <Button value="Rozpocznik quiz" onClick={() => setStart(true)}></Button>
       </>
     ) : (
       <>
